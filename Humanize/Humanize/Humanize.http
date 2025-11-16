@@ -1,0 +1,6 @@
+@Humanize_HostAddress = http://localhost:5168
+
+GET {{Humanize_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
