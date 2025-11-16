@@ -18,6 +18,40 @@ namespace Humanize.Controllers
             _logger = logger;
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<PaginatedResultDTO<VoucherDTO>>> Search([FromQuery] VoucherSearchParametersDTO parameters)
+        {
+            try
+            {
+                var (data, totalCount) = await _voucherRepository.SearchAsync(parameters);
+
+                var vouchersDto = data.Select(v => new VoucherDTO
+                {
+                    Id = v.Id,
+                    Nome = v.Nome,
+                    Loja = v.Loja,
+                    Validade = v.Validade,
+                    Status = v.Status,
+                    TotalUsuarios = v.Usuarios?.Count ?? 0
+                }).ToList();
+
+                var result = new PaginatedResultDTO<VoucherDTO>
+                {
+                    Data = vouchersDto,
+                    TotalCount = totalCount,
+                    Page = parameters.Page,
+                    PageSize = parameters.PageSize
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar vouchers");
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VoucherDTO>>> GetAll()
         {

@@ -18,6 +18,39 @@ namespace Humanize.Controllers
             _logger = logger;
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<PaginatedResultDTO<AvaliacaoDTO>>> Search([FromQuery] AvaliacaoSearchParametersDTO parameters)
+        {
+            try
+            {
+                var (data, totalCount) = await _avaliacaoRepository.SearchAsync(parameters);
+
+                var avaliacoesDto = data.Select(a => new AvaliacaoDTO
+                {
+                    Id = a.Id,
+                    DataHora = a.DataHora,
+                    UsuarioId = a.UsuarioId,
+                    UsuarioNome = a.Usuario?.Nome,
+                    TotalRespostas = a.Respostas?.Count ?? 0
+                }).ToList();
+
+                var result = new PaginatedResultDTO<AvaliacaoDTO>
+                {
+                    Data = avaliacoesDto,
+                    TotalCount = totalCount,
+                    Page = parameters.Page,
+                    PageSize = parameters.PageSize
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar avaliações");
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AvaliacaoDTO>>> GetAll()
         {

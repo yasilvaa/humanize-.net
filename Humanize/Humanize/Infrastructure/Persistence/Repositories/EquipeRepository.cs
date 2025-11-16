@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Humanize.Infrastructure.Persistence.Entities;
+using Humanize.DTOs;
+using System.Linq.Expressions;
 
 namespace Humanize.Infrastructure.Persistence.Repositories
 {
@@ -10,6 +12,56 @@ namespace Humanize.Infrastructure.Persistence.Repositories
         public EquipeRepository(HumanizeContext context)
         {
             _context = context;
+        }
+
+        public async Task<(IEnumerable<Equipe> Data, int TotalCount)> SearchAsync(EquipeSearchParametersDTO parameters)
+        {
+            var query = _context.Equipes
+                .Include(e => e.Usuarios)
+                .AsQueryable();
+
+            // Filtros
+            if (!string.IsNullOrEmpty(parameters.SearchTerm))
+            {
+                query = query.Where(e => e.Nome.Contains(parameters.SearchTerm));
+            }
+
+            if (!string.IsNullOrEmpty(parameters.Nome))
+            {
+                query = query.Where(e => e.Nome.Contains(parameters.Nome));
+            }
+
+            if (parameters.MinUsuarios.HasValue)
+            {
+                query = query.Where(e => e.Usuarios.Count >= parameters.MinUsuarios.Value);
+            }
+
+            if (parameters.MaxUsuarios.HasValue)
+            {
+                query = query.Where(e => e.Usuarios.Count <= parameters.MaxUsuarios.Value);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            if (!string.IsNullOrEmpty(parameters.SortBy))
+            {
+                var isDescending = parameters.SortDirection?.ToLower() == "desc";
+
+                query = parameters.SortBy.ToLower() switch
+                {
+                    "id" => isDescending ? query.OrderByDescending(e => e.Id) : query.OrderBy(e => e.Id),
+                    "nome" => isDescending ? query.OrderByDescending(e => e.Nome) : query.OrderBy(e => e.Nome),
+                    "totalusuarios" => isDescending ? query.OrderByDescending(e => e.Usuarios.Count) : query.OrderBy(e => e.Usuarios.Count),
+                    _ => query.OrderBy(e => e.Id)
+                };
+            }
+
+            var data = await query
+                .Skip((parameters.Page - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToListAsync();
+
+            return (data, totalCount);
         }
 
         public async Task<Equipe> AddAsync(Equipe equipe)

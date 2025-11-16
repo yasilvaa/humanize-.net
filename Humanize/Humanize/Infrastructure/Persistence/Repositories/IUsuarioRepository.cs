@@ -1,4 +1,5 @@
 ﻿using Humanize.Infrastructure.Persistence.Entities;
+using Humanize.DTOs;
 
 namespace Humanize.Infrastructure.Persistence.Repositories
 {
@@ -10,5 +11,6 @@ namespace Humanize.Infrastructure.Persistence.Repositories
         Task UpdateAsync(Usuario usuario);
         Task DeleteAsync(int id);
         Task<bool> EmailExistsAsync(string email);
+        Task<(IEnumerable<Usuario> Data, int TotalCount)> SearchAsync(UsuarioSearchParametersDTO parameters);
     }
 }

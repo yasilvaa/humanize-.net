@@ -18,6 +18,41 @@ namespace Humanize.Controllers
             _logger = logger;
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<PaginatedResultDTO<RespostaDTO>>> Search([FromQuery] RespostaSearchParametersDTO parameters)
+        {
+            try
+            {
+                var (data, totalCount) = await _respostaRepository.SearchAsync(parameters);
+
+                var respostasDto = data.Select(r => new RespostaDTO
+                {
+                    Id = r.Id,
+                    Humor = r.Humor,
+                    Categoria = r.Categoria,
+                    Comentario = r.Comentario,
+                    AvaliacaoId = r.AvaliacaoId,
+                    AvaliacaoDataHora = r.Avaliacao?.DataHora,
+                    PerguntaId = r.PerguntaId,
+                    PerguntaTitulo = r.Pergunta?.Titulo
+                }).ToList();
+
+                var result = new PaginatedResultDTO<RespostaDTO>
+                {
+                    Data = respostasDto,
+                    TotalCount = totalCount,
+                    Page = parameters.Page,
+                    PageSize = parameters.PageSize
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar respostas");
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RespostaDTO>>> GetAll()

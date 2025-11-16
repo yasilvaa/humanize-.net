@@ -1,4 +1,5 @@
 ﻿using Humanize.Infrastructure.Persistence.Entities;
+using Humanize.DTOs;
 
 namespace Humanize.Infrastructure.Persistence.Repositories
 {
@@ -13,5 +14,6 @@ namespace Humanize.Infrastructure.Persistence.Repositories
         Task DeleteAsync(int id);
         Task<IEnumerable<Avaliacao>> GetAvaliacoesWithRespostasAsync();
         Task<Avaliacao> GetUltimaAvaliacaoUsuarioAsync(int usuarioId);
+        Task<(IEnumerable<Avaliacao> Data, int TotalCount)> SearchAsync(AvaliacaoSearchParametersDTO parameters);
     }
 }

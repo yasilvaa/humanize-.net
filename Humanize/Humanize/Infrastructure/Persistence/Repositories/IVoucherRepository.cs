@@ -1,4 +1,5 @@
 ﻿using Humanize.Infrastructure.Persistence.Entities;
+using Humanize.DTOs;
 
 namespace Humanize.Infrastructure.Persistence.Repositories
 {
@@ -13,5 +14,6 @@ namespace Humanize.Infrastructure.Persistence.Repositories
         Task UpdateAsync(Voucher voucher);
         Task DeleteAsync(int id);
         Task<IEnumerable<Voucher>> GetVouchersWithUsuariosAsync();
+        Task<(IEnumerable<Voucher> Data, int TotalCount)> SearchAsync(VoucherSearchParametersDTO parameters);
     }
 }

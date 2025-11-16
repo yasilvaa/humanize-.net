@@ -1,4 +1,5 @@
 ﻿using Humanize.Infrastructure.Persistence.Entities;
+using Humanize.DTOs;
 
 namespace Humanize.Infrastructure.Persistence.Repositories
 {
@@ -15,5 +16,6 @@ namespace Humanize.Infrastructure.Persistence.Repositories
         Task DeleteAsync(int id);
         Task<double> GetMediaHumorByPerguntaAsync(int perguntaId);
         Task<IEnumerable<Resposta>> GetRespostasWithComentarioAsync();
+        Task<(IEnumerable<Resposta> Data, int TotalCount)> SearchAsync(RespostaSearchParametersDTO parameters);
     }
 }

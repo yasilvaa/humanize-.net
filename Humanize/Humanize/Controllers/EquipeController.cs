@@ -20,6 +20,37 @@ namespace Humanize.Controllers
             _logger = logger;
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<PaginatedResultDTO<EquipeDTO>>> Search([FromQuery] EquipeSearchParametersDTO parameters)
+        {
+            try
+            {
+                var (data, totalCount) = await _equipeRepository.SearchAsync(parameters);
+
+                var equipesDto = data.Select(e => new EquipeDTO
+                {
+                    Id = e.Id,
+                    Nome = e.Nome ?? string.Empty,
+                    TotalUsuarios = e.Usuarios?.Count ?? 0
+                }).ToList();
+
+                var result = new PaginatedResultDTO<EquipeDTO>
+                {
+                    Data = equipesDto,
+                    TotalCount = totalCount,
+                    Page = parameters.Page,
+                    PageSize = parameters.PageSize
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar equipes");
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EquipeDTO>>> GetAll()
         {
