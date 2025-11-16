@@ -12,54 +12,53 @@ namespace Humanize.Infrastructure.Persistence.Configurations
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Id)
-                .HasColumnName("id_usuario")
+                .HasColumnName("ID_USUARIO")
                 .ValueGeneratedOnAdd();
 
             builder.Property(u => u.Nome)
-                .HasColumnName("nm_usuario")
-                .HasMaxLength(100)
-                .IsRequired();
+                 .HasColumnName("NM_USUARIO")
+                 .HasMaxLength(100)
+                 .IsRequired();
 
             builder.Property(u => u.Email)
-                .HasColumnName("em_usuario")
+                .HasColumnName("EM_USUARIO")
                 .HasMaxLength(100)
                 .IsRequired();
 
             builder.Property(u => u.Tipo)
-                .HasColumnName("tp_usuario")
+                .HasColumnName("TP_USUARIO")
                 .HasMaxLength(11)
                 .IsRequired();
 
             builder.Property(u => u.Senha)
-                .HasColumnName("senha_usuario")
-                .HasMaxLength(20)
-                .IsRequired();
+                 .HasColumnName("SENHA_USUARIO")
+                 .HasMaxLength(50)
+                  .IsRequired();
 
             builder.Property(u => u.EquipeId)
-                .HasColumnName("T_HUMANIZE_EQUIPE_id_equipe")
-                .IsRequired();
+                  .HasColumnName("T_HUMANIZE_EQUIPE_ID_EQUIPE")
+                  .IsRequired();
 
             builder.Property(u => u.VoucherId)
-                .HasColumnName("T_HUMANIZE_VOUCHER_id_voucher")
-                .IsRequired();
-
+                 .HasColumnName("T_HUMANIZE_VOUCHER_ID_VOUCHER")
+                 .IsRequired(false);
 
             builder.HasIndex(u => u.Email)
-                .IsUnique()
-                .HasDatabaseName("T_HUMANIZE_USUARIO_em_usuario_UN");
+                  .IsUnique()
+                  .HasDatabaseName("UQ_HUMANIZE_EMAIL");
 
             // relacionamentos
             builder.HasOne(u => u.Equipe)
                 .WithMany(e => e.Usuarios)
                 .HasForeignKey(u => u.EquipeId)
-                .HasConstraintName("T_HUMANIZE_USUARIO_T_HUMANIZE_EQUIPE_FK")
+                .HasConstraintName("FK_HUMANIZE_USUARIO_EQUIPE")
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(u => u.Voucher)
-                .WithMany(v => v.Usuarios)
-                .HasForeignKey(u => u.VoucherId)
-                .HasConstraintName("T_HUMANIZE_USUARIO_T_HUMANIZE_VOUCHER_FK")
-                .OnDelete(DeleteBehavior.Restrict);
+               .WithMany(v => v.Usuarios)
+               .HasForeignKey(u => u.VoucherId)
+               .HasConstraintName("FK_HUMANIZE_USUARIO_VOUCHER")
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

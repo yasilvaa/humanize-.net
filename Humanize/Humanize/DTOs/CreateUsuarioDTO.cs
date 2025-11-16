@@ -15,7 +15,7 @@ namespace Humanize.DTOs
 
         [Required(ErrorMessage = "Senha é obrigatória")]
         [MinLength(6, ErrorMessage = "Senha deve ter pelo menos 6 caracteres")]
-        [StringLength(20, ErrorMessage = "Senha deve ter no máximo 20 caracteres")]
+        [StringLength(50, ErrorMessage = "Senha deve ter no máximo 50 caracteres")]
         public string Senha { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Tipo é obrigatório")]
@@ -24,9 +24,7 @@ namespace Humanize.DTOs
 
         [Required(ErrorMessage = "ID da equipe é obrigatório")]
         public int EquipeId { get; set; }
-
-        [Required(ErrorMessage = "ID do voucher é obrigatório")]
-        public int VoucherId { get; set; }
+        public int? VoucherId { get; set; }
     }
 
 }

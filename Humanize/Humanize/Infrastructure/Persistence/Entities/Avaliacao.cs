@@ -6,9 +6,8 @@
         public DateTime DataHora { get; set; }
         
         public int UsuarioId { get; set; }
-   
 
-        public virtual Usuario Usuario { get; set; }
+        public virtual Usuario Usuario { get; set; } = null!;
         public virtual ICollection<Resposta> Respostas { get; set; } = new List<Resposta>();
    
         public Avaliacao()

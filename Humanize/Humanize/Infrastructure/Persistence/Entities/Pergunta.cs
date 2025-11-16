@@ -3,7 +3,7 @@
     public class Pergunta
     {
         public int Id { get; set; }
-        public string Titulo { get; set; }
+        public string Titulo { get; set; } = string.Empty;
 
         public virtual ICollection<Resposta> Respostas { get; set; } = new List<Resposta>();
     }

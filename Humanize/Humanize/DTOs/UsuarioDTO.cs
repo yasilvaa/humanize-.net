@@ -8,7 +8,7 @@ namespace Humanize.DTOs
         public string Tipo { get; set; } = string.Empty;
         public int EquipeId { get; set; }
         public string? EquipeNome { get; set; } 
-        public int VoucherId { get; set; }
+        public int? VoucherId { get; set; }
         public string? VoucherNome { get; set; }
     }
 }

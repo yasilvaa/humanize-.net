@@ -11,7 +11,7 @@ namespace Humanize.DTOs
         public string? Email { get; set; }
 
         [MinLength(6, ErrorMessage = "Senha deve ter pelo menos 6 caracteres")]
-        [StringLength(20, ErrorMessage = "Senha deve ter no máximo 20 caracteres")]
+        [StringLength(50, ErrorMessage = "Senha deve ter no máximo 50 caracteres")]
         public string? Senha { get; set; }
 
         [StringLength(11, ErrorMessage = "Tipo deve ter no máximo 11 caracteres")]
@@ -20,7 +20,6 @@ namespace Humanize.DTOs
         [Range(1, int.MaxValue, ErrorMessage = "ID da equipe deve ser um número positivo")]
         public int? EquipeId { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "ID do voucher deve ser um número positivo")]
         public int? VoucherId { get; set; }
     }
 }

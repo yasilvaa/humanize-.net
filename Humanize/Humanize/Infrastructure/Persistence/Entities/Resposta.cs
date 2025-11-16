@@ -10,7 +10,7 @@
         public int AvaliacaoId { get; set; }
         public int PerguntaId { get; set; }
         
-        public virtual Avaliacao Avaliacao { get; set; }
-        public virtual Pergunta Pergunta { get; set; }
+        public virtual Avaliacao Avaliacao { get; set; } = null!;
+        public virtual Pergunta Pergunta { get; set; } = null!;
     }
 }
