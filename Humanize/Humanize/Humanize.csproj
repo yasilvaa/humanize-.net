@@ -22,6 +22,7 @@
     <Folder Include="Application\DTOs\" />
     <Folder Include="Domain\Services\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Middleware\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

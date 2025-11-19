@@ -26,17 +26,17 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-      options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
     });
 
-// Configuração do CORS
 builder.Services.AddCors(options =>
 {
-  options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
-          .AllowAnyMethod()
-    .AllowAnyHeader();
+        policy.SetIsOriginAllowed(origin => true) 
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials(); 
     });
 });
 
@@ -44,9 +44,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() 
-    { 
-        Title = "Humanize API", 
+    c.SwaggerDoc("v1", new()
+    {
+        Title = "Humanize API",
         Version = "v1",
         Description = "API para sistema de avaliação de bem-estar dos colaboradores"
     });
@@ -59,21 +59,23 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-app.UseSwaggerUI(c =>
- {
+    app.UseSwaggerUI(c =>
+    {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Humanize API v1");
         c.RoutePrefix = "swagger";
+        c.DefaultModelsExpandDepth(-1); 
+        c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List);
     });
 }
 else
 {
     app.UseExceptionHandler("/Error");
- app.UseHsts();
+    app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-app.UseCors();
+app.UseCors("AllowAll"); 
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -84,7 +86,17 @@ app.MapGet("/", () => new
     Application = "Humanize API",
     Version = "1.0.0",
     Environment = app.Environment.EnvironmentName,
-    Timestamp = DateTime.Now
+    Timestamp = DateTime.Now,
+    Available_Endpoints = new[]
+    {
+        "/swagger",
+        "/api/Avaliacao",
+        "/api/Usuario",
+        "/api/Equipe",
+        "/api/Voucher",
+        "/api/Pergunta",
+        "/api/Resposta"
+    }
 }).WithTags("Info");
 
 app.Run();
