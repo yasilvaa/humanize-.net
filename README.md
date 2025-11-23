@@ -230,7 +230,11 @@ Clone o repositório do front-end:
    ```typescript
    const BASE_URL = 'http://192.168.1.10:5168';
    ```
-3. Salve o arquivo
+3. Abra o arquivo `src/api/ia.ts` e configure a URL da IA:
+   ```typescript
+   export const IA_BASE_URL = 'http://SEU_IP_AQUI:8000';
+   ```
+4. Salve os arquivos
 
 ### Passo 4: Instalar Dependências
 No terminal, dentro da pasta do projeto, execute:
