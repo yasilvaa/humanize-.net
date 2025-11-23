@@ -199,7 +199,27 @@ dotnet run --launch-profile http
 3. Localize o **Endereço IPv4** da sua rede 
 4. Anote este endereço IP
 
+### Backend IA (Python)
+1. Certifique-se de ter **Python 3.11+** e **Poetry** instalados
+2. Clone o repositório da IA:
+   ```powershell
+   git clone https://github.com/viniruggeri/humanize-ia.git
+3. Instale as dependências:
+   ```powershell
+   poetry install
+   ```
+4. Inicie o servidor:
+   ```powershell
+   poetry run python main.py
+   ```
+5. O servidor de IA rodará na porta **8000**
+   
 ### FRONT-END
+Clone o repositório do front-end:
+   ```powershell
+   git clone https://github.com/yasilvaa/humanize-mobile
+   ```
+   
 ### Passo 3: Configurar o IP no Projeto Mobile
 1. Abra o arquivo `src/api/apiClient.ts`
 2. Na linha 3, altere a constante `BASE_URL` para o seu IP local:
@@ -229,6 +249,11 @@ npx expo start
 2. Abra o app **Expo Go** no seu celular
 3. Escaneie o QR Code exibido no terminal
 4. Aguarde o app carregar
+
+#### | Dica: 
+Caso queira visualizar um perfil de líder já cadastrado, utilize como email 'ana@email.com' e senha 'ana1234'. 
+
+Caso queira visualizar um perfil de colaborador já cadastrado, utilize como email 'joao@email.com' e senha 'joao1234'
 
 ### ⚠️ Importante
 - **Celular e computador devem estar na mesma rede Wi-Fi**
